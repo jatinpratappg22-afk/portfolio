@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}      # Your EC2 private key (.pem file contents)
           script: |
             # Go to app directory
-            cd ~/myapp
+            cd ~/portfolio
 
             # Pull latest code
             git pull origin main

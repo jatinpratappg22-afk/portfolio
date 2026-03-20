@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Rivera — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0c0e;
+      --surface: #13141a;
+      --border: #1f2130;
+      --accent: #c8f060;
+      --accent2: #60a0f0;
+      --text: #e8e9f0;
+      --muted: #6b6f85;
+      --card-bg: #0f1018;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200, 240, 96, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 240, 96, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(200, 240, 96, 0.06); top: -100px; right: -100px; animation-delay: 0s; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(96, 160, 240, 0.06); bottom: 0; left: -100px; animation-delay: -6s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.1); }
+    }
+
+    /* Layout */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 64px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(200, 240, 96, 0.3);
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 16px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--accent);
+      margin-top: 20px;
+    }
+
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent) 0%, transparent 60%);
+      margin: 48px 0;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+
+    /* Sections */
+    section { animation: fadeUp 0.7s ease both; }
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.3s; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* About */
+    .about-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: #c0c2d0;
+    }
+
+    /* Projects */
+    .projects { display: flex; flex-direction: column; gap: 16px; }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 12px;
+      transition: border-color 0.25s, transform 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-card:hover {
+      border-color: rgba(200, 240, 96, 0.4);
+      transform: translateX(4px);
+    }
+
+    .project-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .project-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+    }
+
+    .arrow {
+      font-size: 18px;
+      color: var(--muted);
+      transition: color 0.2s, transform 0.2s;
+      margin-top: 2px;
+    }
+    .project-card:hover .arrow { color: var(--accent); transform: translate(3px, -3px); }
+
+    /* Links */
+    .links { display: flex; flex-direction: column; gap: 12px; }
+
+    .link-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 13px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .link-row:hover {
+      background: var(--surface);
+      border-color: var(--accent2);
+    }
+
+    .link-left { display: flex; align-items: center; gap: 14px; }
+    .link-icon { font-size: 18px; width: 24px; text-align: center; }
+    .link-name { font-size: 13px; }
+    .link-handle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+
+    .footer-accent { color: var(--accent); }
+
+    /* Animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <main>
+    <!-- Header -->
+    <header>
+      <div class="tag">Available for work</div>
+      <h1>Alex<br /><em>Rivera</em></h1>
+      <p class="subtitle">Full-Stack Developer · Singapore</p>
+      <div class="status">
+        <div class="dot"></div>
+        Currently building cool things on AWS
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <!-- About -->
+    <section style="margin-bottom:48px;">
+      <p class="section-label">// about</p>
+      <p class="about-text">
+        I craft fast, reliable web applications and love automating everything —
+        from CI/CD pipelines to infrastructure. When I'm not coding, I'm
+        probably reading about distributed systems or making pour-over coffee.
+      </p>
+    </section>
+
+    <!-- Projects -->
+    <section style="margin-bottom:48px;">
+      <p class="section-label">// projects</p>
+      <div class="projects">
+        <a class="project-card" href="#" onclick="return false;">
+          <div>
+            <div class="project-name">This App 🚀</div>
+            <div class="project-desc">A Node.js portfolio deployed on AWS EC2 with GitHub Actions CI/CD. Auto-deploys on every push to main.</div>
+            <div class="project-stack">
+              <span class="chip">Node.js</span>
+              <span class="chip">Express</span>
+              <span class="chip">AWS EC2</span>
+              <span class="chip">GitHub Actions</span>
+            </div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+
+        <a class="project-card" href="#" onclick="return false;">
+          <div>
+            <div class="project-name">Weather Dashboard</div>
+            <div class="project-desc">Real-time weather app with location detection and 7-day forecast. Pulls from OpenWeatherMap API.</div>
+            <div class="project-stack">
+              <span class="chip">React</span>
+              <span class="chip">REST API</span>
+              <span class="chip">CSS Grid</span>
+            </div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+
+        <a class="project-card" href="#" onclick="return false;">
+          <div>
+            <div class="project-name">URL Shortener</div>
+            <div class="project-desc">High-performance URL shortener with click analytics, custom slugs, and Redis caching layer.</div>
+            <div class="project-stack">
+              <span class="chip">Node.js</span>
+              <span class="chip">Redis</span>
+              <span class="chip">PostgreSQL</span>
+            </div>
+          </div>
+          <div class="arrow">↗</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section>
+      <p class="section-label">// find me</p>
+      <div class="links">
+        <a class="link-row" href="https://github.com" target="_blank">
+          <div class="link-left">
+            <span class="link-icon">🐙</span>
+            <div>
+              <div class="link-name">GitHub</div>
+              <div class="link-handle">@alexrivera</div>
+            </div>
+          </div>
+          <span style="color:var(--muted);font-size:13px;">↗</span>
+        </a>
+        <a class="link-row" href="https://linkedin.com" target="_blank">
+          <div class="link-left">
+            <span class="link-icon">💼</span>
+            <div>
+              <div class="link-name">LinkedIn</div>
+              <div class="link-handle">Alex Rivera</div>
+            </div>
+          </div>
+          <span style="color:var(--muted);font-size:13px;">↗</span>
+        </a>
+        <a class="link-row" href="mailto:alex@example.com">
+          <div class="link-left">
+            <span class="link-icon">✉️</span>
+            <div>
+              <div class="link-name">Email</div>
+              <div class="link-handle">alex@example.com</div>
+            </div>
+          </div>
+          <span style="color:var(--muted);font-size:13px;">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Alex Rivera</span>
+      <span>Built with <span class="footer-accent">Node.js</span> · Hosted on <span class="footer-accent">AWS EC2</span></span>
+    </footer>
+  </main>
+</body>
+</html>
